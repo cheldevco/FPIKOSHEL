@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8d5fd3">
+  <meta name="description" content="FPI Koshel Application">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+  <title>ФПИ. Кошель</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f8f7fa;
+      color: #222;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 20px rgba(0,0,0,0.08);
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 20px 8px 20px;
+    }
+    .header-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #8d5fd3;
+      letter-spacing: 1px;
+    }
+    .header-icons {
+      display: flex;
+      gap: 10px;
+    }
+    .header-icon {
+      width: 28px;
+      height: 28px;
+      background: #ece6fa;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #8d5fd3;
+      cursor: pointer;
+    }
+    .banner {
+      margin: 0 20px 16px 20px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #e6f7ff;
+      position: relative;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      left: 0; top: 0;
+      z-index: 1;
+      opacity: 0.7;
+    }
+    .banner-text {
+      position: relative;
+      z-index: 2;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #2e2e2e;
+      text-shadow: 1px 1px 0 #fff, 2px 2px 0 #b2f542;
+      text-align: center;
+    }
+    .balance-section {
+      display: flex;
+      gap: 12px;
+      margin: 0 20px 10px 20px;
+    }
+    .balance-card, .commission-card {
+      flex: 1;
+      background: #18181a;
+      color: #fff;
+      border-radius: 12px;
+      padding: 16px 10px 10px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .balance-label {
+      font-size: 1rem;
+      opacity: 0.7;
+    }
+    .balance-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ff4d4f;
+      letter-spacing: 1px;
+    }
+    .commission-btn {
+      background: #8d5fd3;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 0;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .commission-btn:hover {
+      background: #6d3fc3;
+    }
+    .actions {
+      display: flex;
+      gap: 16px;
+      margin: 10px 20px 0 20px;
+    }
+    .action-btn {
+      flex: 1;
+      background: #f3f0fa;
+      color: #8d5fd3;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .action-btn:hover {
+      background: #e0d3f7;
+    }
+    .transactions-section {
+      margin: 24px 20px 0 20px;
+    }
+    .transactions-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #8d5fd3;
+    }
+    .transactions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .transaction {
+      display: flex;
+      align-items: center;
+      background: #f6f6fa;
+      border-radius: 12px;
+      padding: 10px 12px;
+      gap: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+    .transaction-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: #fff;
+      background: #8d5fd3;
+      flex-shrink: 0;
+    }
+    .transaction-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .transaction-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #222;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .transaction-date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 2px;
+    }
+    .transaction-amount {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ff4d4f;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+    .transaction.income .transaction-amount {
+      color: #52c41a;
+    }
+    .month-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px 0 18px 0;
+    }
+    .month-btn {
+      background: none;
+      border: none;
+      color: #8d5fd3;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .month-btn:hover {
+      background: #ece6fa;
+    }
+    @media (max-width: 500px) {
+      .container {
+        border-radius: 0;
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-title">Кошель</div>
+      <div class="header-icons">
+        <div class="header-icon" title="Профиль">👤</div>
+        <div class="header-icon" title="Настройки">⚙️</div>
+        <div class="header-icon" title="Тема">🌙</div>
+      </div>
+    </div>
+    <div class="banner">
+      <img class="banner-img" src="карта.jpg" alt="ФПИ БАНК мем" onerror="this.style.display='none'">
+      <div class="banner-text">ФПИ БАНК<br>ТРЕПЕЩИТЕ</div>
+    </div>
+    <div class="balance-section">
+      <div class="balance-card">
+        <div class="balance-label">Баланс</div>
+        <div class="balance-value" id="balance-value">$ -30,313.13</div>
+      </div>
+      <div class="commission-card">
+        <div class="balance-label">Заплатить комиссию</div>
+        <button class="commission-btn" onclick="payCommission()">Заплатить</button>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="action-btn" onclick="sendMoney()">📤 Send</button>
+      <button class="action-btn" onclick="receiveMoney()">📥 Receive</button>
+    </div>
+    <div class="transactions-section">
+      <div class="transactions-header">Транзакции</div>
+      <div class="month-nav">
+        <button class="month-btn" onclick="prevMonth()">&lt; Previous month</button>
+        <span id="month-label">Июнь 2024</span>
+        <button class="month-btn" onclick="nextMonth()">Next Month &gt;</button>
+      </div>
+      <div class="transactions-list" id="transactions-list"></div>
+    </div>
+  </div>
+  <script>
+    // --- Данные по умолчанию ---
+    const defaultTransactions = [
+      {
+        id: 1,
+        title: 'Открытие приложения',
+        date: new Date().toISOString(),
+        amount: -34.21,
+        icon: '📱',
+        type: 'expense',
+        place: 'Osaka, Today'
+      },
+      {
+        id: 2,
+        title: 'Внезапное списание',
+        date: new Date(Date.now() - 2*24*60*60*1000).toISOString(),
+        amount: -35.88,
+        icon: '💸',
+        type: 'expense',
+        place: 'Osaka, 2 days ago'
+      }
+    ];
+    const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
+
+    // --- LocalStorage ---
+    function getTransactions() {
+      const data = localStorage.getItem('fpi_koshel_transactions');
+      if (!data) return defaultTransactions;
+      try {
+        return JSON.parse(data);
+      } catch {
+        return defaultTransactions;
+      }
+    }
+    function setTransactions(arr) {
+      localStorage.setItem('fpi_koshel_transactions', JSON.stringify(arr));
+    }
+
+    // --- Баланс ---
+    function getBalance(transactions) {
+      return transactions.reduce((sum, t) => sum + t.amount, 0);
+    }
+    function updateBalance() {
+      const transactions = getTransactions();
+      const balance = getBalance(transactions);
+      const el = document.getElementById('balance-value');
+      el.textContent = `$ ${balance.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+      el.style.color = balance < 0 ? '#ff4d4f' : '#52c41a';
+    }
+
+    // --- Транзакции ---
+    function renderTransactions() {
+      const transactions = getTransactions();
+      const list = document.getElementById('transactions-list');
+      list.innerHTML = '';
+      const filtered = transactions.filter(t => {
+        const d = new Date(t.date);
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      });
+      if (filtered.length === 0) {
+        list.innerHTML = '<div style="color:#aaa;text-align:center;padding:20px 0;">Нет транзакций за этот месяц</div>';
+        return;
+      }
+      filtered.forEach(t => {
+        const d = new Date(t.date);
+        const dateStr = t.place || `${d.toLocaleDateString('ru-RU', {day:'numeric', month:'long'})}, ${d.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+        const amountStr = (t.amount > 0 ? '+' : '') + t.amount.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+        const tr = document.createElement('div');
+        tr.className = 'transaction' + (t.amount > 0 ? ' income' : '');
+        tr.innerHTML = `
+          <div class="transaction-icon" style="background:${t.amount>0?'#52c41a':'#8d5fd3'}">${t.icon||'💸'}</div>
+          <div class="transaction-info">
+            <div class="transaction-title">${t.title}</div>
+            <div class="transaction-date">${dateStr}</div>
+          </div>
+          <div class="transaction-amount">${amountStr}</div>
+        `;
+        list.appendChild(tr);
+      });
+    }
+
+    // --- Навигация по месяцам ---
+    function updateMonthLabel() {
+      document.getElementById('month-label').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    }
+    function prevMonth() {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      updateMonthLabel();
+      renderTransactions();
+    }
+    function nextMonth() {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      updateMonthLabel();
+      renderTransactions();
+    }
+
+    // --- Кнопки действий ---
+    function payCommission() {
+      const amount = Math.round(Math.random()*100+10)/100;
+      addTransaction({
+        title: 'Комиссия ФПИ',
+        amount: -amount,
+        icon: '💰',
+        type: 'expense',
+        date: new Date().toISOString(),
+        place: 'FPI, сейчас'
+      });
+    }
+    function sendMoney() {
+      const title = prompt('Кому отправить деньги? (имя или мем)');
+      if (!title) return;
+      const amount = parseFloat(prompt('Сколько отправить? (например, 100.00)'));
+      if (isNaN(amount) || amount <= 0) return alert('Некорректная сумма!');
+      addTransaction({
+        title: `Отправка: ${title}`,
+        amount: -amount,
+        icon: '📤',
+        type: 'expense',
+        date: new Date().toISOString(),
+        place: 'FPI, сейчас'
+      });
+    }
+    function receiveMoney() {
+      const title = prompt('От кого получены деньги? (имя или мем)');
+      if (!title) return;
+      const amount = parseFloat(prompt('Сколько получено? (например, 100.00)'));
+      if (isNaN(amount) || amount <= 0) return alert('Некорректная сумма!');
+      addTransaction({
+        title: `Поступление: ${title}`,
+        amount: amount,
+        icon: '📥',
+        type: 'income',
+        date: new Date().toISOString(),
+        place: 'FPI, сейчас'
+      });
+    }
+    function addTransaction(tr) {
+      const arr = getTransactions();
+      tr.id = Date.now();
+      arr.unshift(tr);
+      setTransactions(arr);
+      updateBalance();
+      renderTransactions();
+    }
+
+    // --- Инициализация ---
+    function init() {
+      updateMonthLabel();
+      updateBalance();
+      renderTransactions();
+    }
+    window.onload = init;
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html> 
